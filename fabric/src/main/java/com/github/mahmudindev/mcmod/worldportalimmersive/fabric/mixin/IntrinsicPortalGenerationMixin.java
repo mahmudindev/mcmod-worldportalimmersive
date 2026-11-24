@@ -26,8 +26,8 @@ import java.util.Map;
 public abstract class IntrinsicPortalGenerationMixin {
     @Unique
     private static final CustomPortalGeneration INTRINSIC = new CustomPortalGeneration(
-            Lists.newArrayList(CustomPortalGeneration.anyDimension),
-            CustomPortalGeneration.theSameDimension,
+            Lists.newArrayList(CustomPortalGeneration.ANY_DIMENSION),
+            CustomPortalGeneration.THE_SAME_DIMENSION,
             1, 1,
             false,
             IntrinsicPortalGeneration.intrinsicNetherPortalForm,
@@ -35,8 +35,8 @@ public abstract class IntrinsicPortalGenerationMixin {
     );
     @Unique
     private static final CustomPortalGeneration DILIGENT = new CustomPortalGeneration(
-            Lists.newArrayList(CustomPortalGeneration.anyDimension),
-            CustomPortalGeneration.theSameDimension,
+            Lists.newArrayList(CustomPortalGeneration.ANY_DIMENSION),
+            CustomPortalGeneration.THE_SAME_DIMENSION,
             1, 1,
             false,
             IntrinsicPortalGeneration.diligentNetherPortalForm,

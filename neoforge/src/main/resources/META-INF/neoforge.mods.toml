@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[4,)"
 issueTrackerURL = "https://github.com/mahmudindev/mcmod-worldportalimmersive/issues"
 license = "ARR"
 
@@ -14,29 +14,35 @@ Add Immersive Portals support to World Portal.
 logoFile = "assets/worldportalimmersive/icon.png"
 
 [[dependencies.worldportalimmersive]]
-modId = "forge"
-mandatory = true
-versionRange = "[47,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.worldportalimmersive]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.1,)"
+type = "required"
+versionRange = "[1.21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.worldportalimmersive]]
 modId = "worldportal"
-mandatory = true
+type = "required"
 versionRange = "[0.0.12,)"
 ordering = "NONE"
 side = "SERVER"
 
 [[dependencies.worldportalimmersive]]
 modId = "immersive_portals"
-mandatory = true
-versionRange = "[3.0.7,)"
+type = "required"
+versionRange = "[6.0.7,)"
 ordering = "NONE"
 side = "SERVER"
+
+[[mixins]]
+config = "worldportalimmersive.mixins.json"
+
+[[mixins]]
+config = "worldportalimmersive_platform.mixins.json"

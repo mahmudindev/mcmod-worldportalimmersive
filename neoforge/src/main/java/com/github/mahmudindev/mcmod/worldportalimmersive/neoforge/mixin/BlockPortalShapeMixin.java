@@ -1,4 +1,4 @@
-package com.github.mahmudindev.mcmod.worldportalimmersive.forge.mixin;
+package com.github.mahmudindev.mcmod.worldportalimmersive.neoforge.mixin;
 
 import com.github.mahmudindev.mcmod.worldportalimmersive.base.IBlockPortalShape;
 import org.spongepowered.asm.mixin.Mixin;

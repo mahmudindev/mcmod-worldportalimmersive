@@ -1,4 +1,4 @@
-package com.github.mahmudindev.mcmod.worldportalimmersive.forge.mixin;
+package com.github.mahmudindev.mcmod.worldportalimmersive.neoforge.mixin;
 
 import com.github.mahmudindev.mcmod.worldportal.base.IServerLevel;
 import com.github.mahmudindev.mcmod.worldportal.mixin.BaseFireBlockAccessor;
@@ -8,7 +8,8 @@ import com.github.mahmudindev.mcmod.worldportal.portal.PortalManager;
 import com.github.mahmudindev.mcmod.worldportalimmersive.WorldPortalImmersive;
 import com.github.mahmudindev.mcmod.worldportalimmersive.base.IBlockPortalShape;
 import com.github.mahmudindev.mcmod.worldportalimmersive.base.IBlockPos;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
@@ -29,9 +30,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import qouteall.imm_ptl.core.platform_specific.IPRegistry;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.custom_portal_gen.CustomPortalGeneration;
+import qouteall.imm_ptl.core.portal.custom_portal_gen.PortalGenInfo;
 import qouteall.imm_ptl.core.portal.custom_portal_gen.form.NetherPortalLikeForm;
 import qouteall.imm_ptl.core.portal.nether_portal.BlockPortalShape;
 
@@ -93,7 +94,7 @@ public class NetherPortalLikeFormMixin {
             }
 
             if (!fromWorldX.getEntities(
-                    IPRegistry.PORTAL.get(),
+                    Portal.ENTITY_TYPE,
                     new AABB(innerCenterVecC),
                     entity -> {
                         return entity.blockPosition() == innerCenterVecC;
@@ -238,7 +239,7 @@ public class NetherPortalLikeFormMixin {
             method = "perform",
             at = @At(
                     value = "INVOKE",
-                    target = "Lqouteall/imm_ptl/core/portal/custom_portal_gen/form/NetherPortalLikeForm;getFrameMatchingFunc(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerLevel;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;)Ljava/util/function/Function;"
+                    target = "Lqouteall/imm_ptl/core/portal/custom_portal_gen/form/NetherPortalLikeForm;getFrameMatchingFunc(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerLevel;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;)Lqouteall/imm_ptl/core/portal/nether_portal/FrameSearching$FrameSearchingFunc;"
             ),
             index = 2,
             remap = false
@@ -258,7 +259,7 @@ public class NetherPortalLikeFormMixin {
             method = "perform",
             at = @At(
                     value = "INVOKE",
-                    target = "Lqouteall/imm_ptl/core/portal/nether_portal/NetherPortalGeneration;startGeneratingPortal(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerLevel;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;Lnet/minecraft/core/BlockPos;ILjava/util/function/Predicate;Ljava/util/function/Consumer;Ljava/util/function/Consumer;Ljava/util/function/Supplier;Ljava/util/function/BooleanSupplier;Ljava/util/function/Function;)V"
+                    target = "Lqouteall/imm_ptl/core/portal/nether_portal/NetherPortalGeneration;startGeneratingPortal(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerLevel;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;Lnet/minecraft/core/BlockPos;ILjava/util/function/Predicate;Ljava/util/function/Consumer;Ljava/util/function/Consumer;Ljava/util/function/Supplier;Ljava/util/function/BooleanSupplier;Lqouteall/imm_ptl/core/portal/nether_portal/FrameSearching$FrameSearchingFunc;)V"
             ),
             index = 6,
             remap = false
@@ -286,7 +287,7 @@ public class NetherPortalLikeFormMixin {
             method = "perform",
             at = @At(
                     value = "INVOKE",
-                    target = "Lqouteall/imm_ptl/core/portal/nether_portal/NetherPortalGeneration;startGeneratingPortal(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerLevel;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;Lnet/minecraft/core/BlockPos;ILjava/util/function/Predicate;Ljava/util/function/Consumer;Ljava/util/function/Consumer;Ljava/util/function/Supplier;Ljava/util/function/BooleanSupplier;Ljava/util/function/Function;)V",
+                    target = "Lqouteall/imm_ptl/core/portal/nether_portal/NetherPortalGeneration;startGeneratingPortal(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerLevel;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;Lnet/minecraft/core/BlockPos;ILjava/util/function/Predicate;Ljava/util/function/Consumer;Ljava/util/function/Consumer;Ljava/util/function/Supplier;Ljava/util/function/BooleanSupplier;Lqouteall/imm_ptl/core/portal/nether_portal/FrameSearching$FrameSearchingFunc;)V",
                     shift = At.Shift.AFTER
             ),
             remap = false
@@ -337,27 +338,24 @@ public class NetherPortalLikeFormMixin {
         ((IBlockPortalShape) fromShape).worldportalimmersive$clear();
     }
 
-    @ModifyExpressionValue(
+    @WrapOperation(
             method = "lambda$getFrameMatchingFunc$7",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;matchShapeWithMovedFirstFramePos(Ljava/util/function/Predicate;Ljava/util/function/Predicate;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos$MutableBlockPos;)Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;"
-            ),
-            remap = false
+                    value = "NEW",
+                    target = "(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/resources/ResourceKey;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;Lqouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape;)Lqouteall/imm_ptl/core/portal/custom_portal_gen/PortalGenInfo;"
+            )
     )
-    private static BlockPortalShape getFrameMatchingFuncSupport(
-            BlockPortalShape original,
-            @Local(argsOnly = true) BlockPortalShape fromShape,
-            @Local(argsOnly = true, ordinal = 0) ServerLevel fromWorld,
+    private static PortalGenInfo getFrameMatchingFuncSupport(
+            ResourceKey<Level> from,
+            ResourceKey<Level> _to,
+            BlockPortalShape fromShape,
+            BlockPortalShape toShape,
+            Operation<PortalGenInfo> original,
             @Local(argsOnly = true, ordinal = 1) ServerLevel toWorld
     ) {
-        if (original == null) {
-            return null;
-        }
-
-        BlockPos innerCenterVec = original.innerAreaBox.getCenter();
+        BlockPos innerCenterVec = toShape.innerAreaBox.getCenter();
         List<Portal> portals = toWorld.getEntities(
-                IPRegistry.PORTAL.get(),
+                Portal.ENTITY_TYPE,
                 new AABB(innerCenterVec),
                 entity -> {
                     return entity.blockPosition() == innerCenterVec;
@@ -365,33 +363,33 @@ public class NetherPortalLikeFormMixin {
         );
 
         if (portals.isEmpty()) {
-            return original;
+            return original.call(from, _to, fromShape, toShape);
         }
 
-        Portal portal = portals.get(0);
+        Portal portal = portals.getFirst();
         if (((IBlockPortalShape) fromShape).worldportalimmersive$isPortalSupported()) {
             if (portals.size() != 1) {
                 return null;
             }
 
-            if (portal.dimensionTo != fromWorld.dimension()) {
+            if (portal.dimensionTo != from) {
                 return null;
             }
         } else {
             if (portals.size() > 1) {
-                return original;
+                return original.call(from, _to, fromShape, toShape);
             }
 
-            boolean fromOverworld = fromWorld.dimension() == Level.OVERWORLD;
-            boolean toNether = toWorld.dimension() == Level.NETHER;
+            boolean fromOverworld = from == Level.OVERWORLD;
+            boolean toNether = _to == Level.NETHER;
             if (fromOverworld && toNether) {
                 if (portal.dimensionTo != Level.OVERWORLD) {
                     return null;
                 }
             }
 
-            boolean fromNether = fromWorld.dimension() == Level.NETHER;
-            boolean toOverworld = toWorld.dimension() == Level.OVERWORLD;
+            boolean fromNether = from == Level.NETHER;
+            boolean toOverworld = _to == Level.OVERWORLD;
             if (fromNether && toOverworld) {
                 if (portal.dimensionTo != Level.NETHER) {
                     return null;
@@ -399,6 +397,6 @@ public class NetherPortalLikeFormMixin {
             }
         }
 
-        return original;
+        return original.call(from, _to, fromShape, toShape);
     }
 }

@@ -33,15 +33,9 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
-    annotationProcessor("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
-    implementation("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
-    include("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
-
     modImplementation(":worldportal-fabric:${rootProject.worldportal_version}")
 
-    modImplementation("com.github.iPortalTeam.ImmersivePortalsMod:build:$rootProject.immersiveportals_fabric_version")
-    modImplementation("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:$rootProject.immersiveportals_fabric_version")
-    modImplementation("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:$rootProject.immersiveportals_fabric_version")
+    modImplementation("maven.modrinth:immersiveportals:$rootProject.immersiveportals_fabric_version")
 }
 
 processResources {
